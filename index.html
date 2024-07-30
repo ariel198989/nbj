@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מנתח פוליסות ביטוח</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .upload-section {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .upload-section h2 {
+            margin-top: 0;
+        }
+        input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .accordion {
+            margin-top: 20px;
+        }
+        .accordion-item {
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .accordion-content {
+            padding: 10px;
+            display: none;
+        }
+        .alert {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>מנתח פוליסות ביטוח</h1>
+        
+        <div class="upload-section">
+            <h2>ביטוח חיים</h2>
+            <input type="file" id="lifeInsuranceFile" accept=".pdf">
+        </div>
+        
+        <div class="upload-section">
+            <h2>ביטוח מחלות קשות</h2>
+            <input type="file" id="criticalIllnessFile" accept=".pdf">
+        </div>
+        
+        <div class="upload-section">
+            <h2>ביטוח בריאות</h2>
+            <input type="file" id="healthInsuranceFile" accept=".pdf">
+        </div>
+        
+        <div id="analysisResults" class="accordion"></div>
+        
+        <div class="alert">
+            <strong>שים לב:</strong> זוהי הדגמה המבוססת על ניתוח ידני של המסמכים שסופקו. במערכת אמיתית, הניתוח יתבצע אוטומטית על הקבצים שהועלו ויספק מידע מדויק ומפורט יותר.
+        </div>
+    </div>
+
+    <script>
+        const predefinedAnalysis = {
+            life: {
+                policyNumber: '10617849-6',
+                insured: 'דותן לוין',
+                sumAssured: '1,027,776 ש"ח',
+                premium: '124.10 ש"ח (חודשי)',
+                policyTerm: 'עד 07/2051',
+                beneficiary: 'כמפורט בהצעת הביטוח',
+                keyPoints: [
+                    'הפרמיה משתנה כל 5 שנים עד גיל 65',
+                    'לאחר גיל 65, סכום הביטוח יורד ב-5% מדי שנה',
+                    'הצהרת אי-עישון משפיעה על סכום הביטוח',
+                    'תקופת אכשרה של 90 יום לתביעה ראשונה',
+                    'תקופת אכשרה של 180 יום לתביעות עוקבות'
+                ]
+            },
+            criticalIllness: {
+                policyNumber: '507090940',
+                insured: 'משפחת לוי (דותן, שלו, ינאי ליאו, עומר)',
+                coverage: 'מחלות קשות - מענקית זהב',
+                premiums: {
+                    'דותן': '388.71 ש"ח',
+                    'שלו': '32.59 ש"ח',
+                    'ינאי ליאו': '14.09 ש"ח',
+                    'עומר': '14.09 ש"ח'
+                },
+                sumAssured: '308,618.54 ש"ח לכל מבוטח',
+                policyTerm: 'מתחדשת כל שנתיים עד גיל 75',
+                keyPoints: [
+                    'כיסוי למגוון מחלות קשות לפי תנאי הפוליסה',
+                    'תקופת אכשרה של 90 יום למקרה ביטוח ראשון',
+                    'תקופת אכשרה של 180 יום למקרה ביטוח שני או נוסף',
+                    'תשלום נוסף למקרי סרטן מוקדם',
+                    'כיסוי לצנתור כלילי טיפולי',
+                    'החזר הוצאות נלוות לטיפול ניסיוני בחו"ל למחלת הסרטן'
+                ]
+            },
+            health: {
+                policyNumber: '507090940',
+                insured: 'משפחת לוי (דותן, שלו, ינאי ליאו, עומר)',
+                totalPremium: '774.81 ש"ח (חודשי לכל בני המשפחה)',
+                coverage: [
+                    'השתלות וטיפולים מיוחדים בחו"ל',
+                    'תרופות מיוחדות',
+                    'ניתוחים וטיפולים בחו"ל',
+                    'שירותים רפואיים אמבולטוריים',
+                    'אבחון רפואי מהיר',
+                    'רפואה משלימה',
+                    'ניתוח משלים שב"ן בישראל ללא השתתפות עצמית'
+                ],
+                keyPoints: [
+                    'פוליסה מקיפה הכוללת מגוון רחב של כיסויים',
+                    'כיסויים שונים לכל אחד מבני המשפחה',
+                    'הנחות משמעותיות על חלק מהכיסויים',
+                    'תקופות אכשרה שונות לכיסויים השונים',
+                    'אפשרות לחידוש הפוליסה כל שנתיים',
+                    'כיסוי מיוחד לטיפולי התפתחות הילד עבור הילדים'
+                ]
+            }
+        };
+
+        function analyzePolicy(type, file) {
+            console.log(`קובץ נטען: ${file.name}`);
+            const result = predefinedAnalysis[type];
+            displayAnalysisResult(type, result);
+        }
+
+        function displayAnalysisResult(type, result) {
+            const title = type === 'life' ? 'ביטוח חיים' :
+                          type === 'criticalIllness' ? 'ביטוח מחלות קשות' :
+                          'ביטוח בריאות';
+
+            let html = `
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">${title}</div>
+                    <div class="accordion-content">
+            `;
+
+            for (const [key, value] of Object.entries(result)) {
+                html += `<div><strong>${key}:</strong> `;
+                if (Array.isArray(value)) {
+                    html += '<ul>';
+                    value.forEach(item => html += `<li>${item}</li>`);
+                    html += '</ul>';
+                } else if (typeof value === 'object') {
+                    html += '<ul>';
+                    for (const [subKey, subValue] of Object.entries(value)) {
+                        html += `<li>${subKey}: ${subValue}</li>`;
+                    }
+                    html += '</ul>';
+                } else {
+                    html += value;
+                }
+                html += '</div>';
+            }
+
+            html += '</div></div>';
+
+            document.getElementById('analysisResults').innerHTML += html;
+        }
+
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.getElementById('lifeInsuranceFile').addEventListener('change', (e) => {
+            if (e.target.files[0]) analyzePolicy('life', e.target.files[0]);
+        });
+
+        document.getElementById('criticalIllnessFile').addEventListener('change', (e) => {
+            if (e.target.files[0]) analyzePolicy('criticalIllness', e.target.files[0]);
+        });
+
+        document.getElementById('healthInsuranceFile').addEventListener('change', (e) => {
+            if (e.target.files[0]) analyzePolicy('health', e.target.files[0]);
+        });
+    </script>
+</body>
+</html>
